@@ -6,43 +6,37 @@
 # Publish all joint states -----------------------------------
 joint_state_controller:
   type: joint_state_controller/JointStateController
-  publish_rate: 50  
+  publish_rate: 50
 
-# Forward Position Controllers ---------------------------------------
-arm_j1_position_controller:
-  type: position_controllers/JointPositionController
-  joint: iiwa_joint_1
-  pid: {p: 800.0, i: 100, d: 80.0, i_clamp_min: -10000, i_clamp_max: 10000}
+# Trajectory Controllers ---------------------------------------
+#
+# Effort Position Controllers ---------------------------------------
+effort_trajectory_controller:
+  type: effort_controllers/JointTrajectoryController
+  joints:
+    - iiwa_joint_1
+    - iiwa_joint_2
+    - iiwa_joint_3
+    - iiwa_joint_4
+    - iiwa_joint_5
+    - iiwa_joint_6
+    - iiwa_joint_7
+    # VALUES ARE NOT CORRECT !
+  gains:
+    iiwa_joint_1: {p: 500,  d: 30, i: 15, i_clamp: 30}
+    iiwa_joint_2: {p: 200,  d: 10, i: 10, i_clamp: 30}
+    iiwa_joint_3: {p: 65,  d: 10, i: 15, i_clamp: 30}
+    iiwa_joint_4: {p: 31,  d: 7, i: 12, i_clamp: 30}
+    iiwa_joint_5: {p: 23,  d: 3, i: 5, i_clamp: 30}
+    iiwa_joint_6: {p: 13,  d: 3, i: 3, i_clamp: 30}
+    iiwa_joint_7: {p: 17,  d: 2, i: 2.5, i_clamp: 10}
 
-arm_j2_position_controller:
-  type: position_controllers/JointPositionController
-  joint: iiwa_joint_2
-  pid: {p: 800.0, i: 1000, d: 100.0, i_clamp_min: -10000, i_clamp_max: 10000}
-  
-arm_j3_position_controller:
-  type: position_controllers/JointPositionController
-  joint: iiwa_joint_3
-  pid: {p: 800.0, i: 10, d: 5.0, i_clamp_min: -10000, i_clamp_max: 10000}
-  
-arm_j4_position_controller:
-  type: position_controllers/JointPositionController
-  joint: iiwa_joint_4
-  pid: {p: 800.0, i: 10, d: 80.0, i_clamp_min: -10000, i_clamp_max: 10000}
-  
-arm_j5_position_controller:
-  type: position_controllers/JointPositionController
-  joint: iiwa_joint_5
-  pid: {p: 300.0, i: 5, d: 10.0, i_clamp_min: -10000, i_clamp_max: 10000}
-  
-arm_j6_position_controller:
-  type: position_controllers/JointPositionController
-  joint: iiwa_joint_6
-  pid: {p: 50.0, i: 1, d: 1.0, i_clamp_min: -10000, i_clamp_max: 10000}
-  
-arm_j7_position_controller:
-  type: position_controllers/JointPositionController
-  joint: iiwa_joint_7
-  pid: {p: 10.0, i: 0.1, d: 1.0, i_clamp_min: -10000, i_clamp_max: 10000}
+  constraints:
+    goal_time: 0.5                   # Override default
+
+  state_publish_rate:  25            # Override default
+  action_monitor_rate: 30            # Override default
+  stop_trajectory_duration: 0        # Override default
 
 gripper_left_effort_controller:
   type: effort_controllers/JointEffortController
@@ -53,7 +47,8 @@ gripper_right_effort_controller:
   type: effort_controllers/JointEffortController
   joint: gripper_right_joint
   pid: {p: 10.0, i: 0.0, d: 0.1, i_clamp_min: -1, i_clamp_max: 1}
-    </rosparam>    
+
+    </rosparam>
 
     <!--<param name="robot_description" textfile="$(find kuka_iiwa_14_prismatic_gripper)/config/total_iiwa_14.xacro"/>-->
     <param name="robot_description" type="str" value='&lt;?xml version="1.0" ?>
@@ -415,12 +410,10 @@ gripper_right_effort_controller:
     &lt;robotNamespace>/iiwa&lt;/robotNamespace>
     &lt;type>transmission_interface/SimpleTransmission&lt;/type>
     &lt;joint name="iiwa_joint_1">
-      &lt;hardwareInterface>PositionJointInterface&lt;/hardwareInterface>
-      &lt;!--&lt;hardwareInterface>hardware_interface/EffortJointInterface&lt;/hardwareInterface>-->
+      &lt;hardwareInterface>EffortJointInterface&lt;/hardwareInterface>
     &lt;/joint>
     &lt;actuator name="iiwa_motor_1">
-      &lt;hardwareInterface>PositionJointInterface&lt;/hardwareInterface>
-      &lt;!--&lt;hardwareInterface>hardware_interface/EffortJointInterface&lt;/hardwareInterface>-->
+      &lt;hardwareInterface>EffortJointInterface&lt;/hardwareInterface>
       &lt;mechanicalReduction>1&lt;/mechanicalReduction>
     &lt;/actuator>
   &lt;/transmission>
@@ -428,12 +421,10 @@ gripper_right_effort_controller:
     &lt;robotNamespace>/iiwa&lt;/robotNamespace>
     &lt;type>transmission_interface/SimpleTransmission&lt;/type>
     &lt;joint name="iiwa_joint_2">
-      &lt;hardwareInterface>PositionJointInterface&lt;/hardwareInterface>
-      &lt;!--&lt;hardwareInterface>hardware_interface/EffortJointInterface&lt;/hardwareInterface>-->
+      &lt;hardwareInterface>EffortJointInterface&lt;/hardwareInterface>
     &lt;/joint>
     &lt;actuator name="iiwa_motor_2">
-      &lt;hardwareInterface>PositionJointInterface&lt;/hardwareInterface>
-      &lt;!--&lt;hardwareInterface>hardware_interface/EffortJointInterface&lt;/hardwareInterface>-->
+      &lt;hardwareInterface>EffortJointInterface&lt;/hardwareInterface>
       &lt;mechanicalReduction>1&lt;/mechanicalReduction>
     &lt;/actuator>
   &lt;/transmission>
@@ -441,12 +432,10 @@ gripper_right_effort_controller:
     &lt;robotNamespace>/iiwa&lt;/robotNamespace>
     &lt;type>transmission_interface/SimpleTransmission&lt;/type>
     &lt;joint name="iiwa_joint_3">
-      &lt;hardwareInterface>PositionJointInterface&lt;/hardwareInterface>
-      &lt;!--&lt;hardwareInterface>hardware_interface/EffortJointInterface&lt;/hardwareInterface>-->
+      &lt;hardwareInterface>EffortJointInterface&lt;/hardwareInterface>
     &lt;/joint>
     &lt;actuator name="iiwa_motor_3">
-      &lt;hardwareInterface>PositionJointInterface&lt;/hardwareInterface>
-      &lt;!--&lt;hardwareInterface>hardware_interface/EffortJointInterface&lt;/hardwareInterface>-->
+      &lt;hardwareInterface>EffortJointInterface&lt;/hardwareInterface>
       &lt;mechanicalReduction>1&lt;/mechanicalReduction>
     &lt;/actuator>
   &lt;/transmission>
@@ -454,12 +443,10 @@ gripper_right_effort_controller:
     &lt;robotNamespace>/iiwa&lt;/robotNamespace>
     &lt;type>transmission_interface/SimpleTransmission&lt;/type>
     &lt;joint name="iiwa_joint_4">
-      &lt;hardwareInterface>PositionJointInterface&lt;/hardwareInterface>
-      &lt;!--&lt;hardwareInterface>hardware_interface/EffortJointInterface&lt;/hardwareInterface>-->
+      &lt;hardwareInterface>EffortJointInterface&lt;/hardwareInterface>
     &lt;/joint>
     &lt;actuator name="iiwa_motor_4">
-      &lt;hardwareInterface>PositionJointInterface&lt;/hardwareInterface>
-      &lt;!--&lt;hardwareInterface>hardware_interface/EffortJointInterface&lt;/hardwareInterface>-->
+      &lt;hardwareInterface>EffortJointInterface&lt;/hardwareInterface>
       &lt;mechanicalReduction>1&lt;/mechanicalReduction>
     &lt;/actuator>
   &lt;/transmission>
@@ -467,12 +454,10 @@ gripper_right_effort_controller:
     &lt;robotNamespace>/iiwa&lt;/robotNamespace>
     &lt;type>transmission_interface/SimpleTransmission&lt;/type>
     &lt;joint name="iiwa_joint_5">
-      &lt;hardwareInterface>PositionJointInterface&lt;/hardwareInterface>
-      &lt;!--&lt;hardwareInterface>hardware_interface/EffortJointInterface&lt;/hardwareInterface>-->
+      &lt;hardwareInterface>EffortJointInterface&lt;/hardwareInterface>
     &lt;/joint>
     &lt;actuator name="iiwa_motor_5">
-      &lt;hardwareInterface>PositionJointInterface&lt;/hardwareInterface>
-      &lt;!--&lt;hardwareInterface>hardware_interface/EffortJointInterface&lt;/hardwareInterface>-->
+      &lt;hardwareInterface>EffortJointInterface&lt;/hardwareInterface>
       &lt;mechanicalReduction>1&lt;/mechanicalReduction>
     &lt;/actuator>
   &lt;/transmission>
@@ -480,12 +465,10 @@ gripper_right_effort_controller:
     &lt;robotNamespace>/iiwa&lt;/robotNamespace>
     &lt;type>transmission_interface/SimpleTransmission&lt;/type>
     &lt;joint name="iiwa_joint_6">
-      &lt;hardwareInterface>PositionJointInterface&lt;/hardwareInterface>
-      &lt;!--&lt;hardwareInterface>hardware_interface/EffortJointInterface&lt;/hardwareInterface>-->
+      &lt;hardwareInterface>EffortJointInterface&lt;/hardwareInterface>
     &lt;/joint>
     &lt;actuator name="iiwa_motor_6">
-      &lt;hardwareInterface>PositionJointInterface&lt;/hardwareInterface>
-      &lt;!--&lt;hardwareInterface>hardware_interface/EffortJointInterface&lt;/hardwareInterface>-->
+      &lt;hardwareInterface>EffortJointInterface&lt;/hardwareInterface>
       &lt;mechanicalReduction>1&lt;/mechanicalReduction>
     &lt;/actuator>
   &lt;/transmission>
@@ -493,12 +476,10 @@ gripper_right_effort_controller:
     &lt;robotNamespace>/iiwa&lt;/robotNamespace>
     &lt;type>transmission_interface/SimpleTransmission&lt;/type>
     &lt;joint name="iiwa_joint_7">
-      &lt;hardwareInterface>PositionJointInterface&lt;/hardwareInterface>
-      &lt;!--&lt;hardwareInterface>hardware_interface/EffortJointInterface&lt;/hardwareInterface>-->
+      &lt;hardwareInterface>EffortJointInterface&lt;/hardwareInterface>
     &lt;/joint>
     &lt;actuator name="iiwa_motor_7">
-      &lt;hardwareInterface>PositionJointInterface&lt;/hardwareInterface>
-      &lt;!--&lt;hardwareInterface>hardware_interface/EffortJointInterface&lt;/hardwareInterface>-->
+      &lt;hardwareInterface>EffortJointInterface&lt;/hardwareInterface>
       &lt;mechanicalReduction>1&lt;/mechanicalReduction>
     &lt;/actuator>
   &lt;/transmission>
@@ -592,11 +573,11 @@ gripper_right_effort_controller:
     &lt;type>transmission_interface/SimpleTransmission&lt;/type>
     &lt;joint name="gripper_left_joint">
       &lt;hardwareInterface>EffortJointInterface&lt;/hardwareInterface>
-      &lt;!--&lt;hardwareInterface>hardware_interface/EffortJointInterface&lt;/hardwareInterface>-->
+      &lt;!--&lt;hardwareInterface>EffortJointInterface&lt;/hardwareInterface>-->
     &lt;/joint>
     &lt;actuator name="gripper_motor_left">
       &lt;hardwareInterface>EffortJointInterface&lt;/hardwareInterface>
-      &lt;!--&lt;hardwareInterface>hardware_interface/EffortJointInterface&lt;/hardwareInterface>-->
+      &lt;!--&lt;hardwareInterface>EffortJointInterface&lt;/hardwareInterface>-->
       &lt;mechanicalReduction>1&lt;/mechanicalReduction>
     &lt;/actuator>
   &lt;/transmission>
@@ -605,11 +586,11 @@ gripper_right_effort_controller:
     &lt;type>transmission_interface/SimpleTransmission&lt;/type>
     &lt;joint name="gripper_right_joint">
       &lt;hardwareInterface>EffortJointInterface&lt;/hardwareInterface>
-      &lt;!--&lt;hardwareInterface>hardware_interface/EffortJointInterface&lt;/hardwareInterface>-->
+      &lt;!--&lt;hardwareInterface>EffortJointInterface&lt;/hardwareInterface>-->
     &lt;/joint>
     &lt;actuator name="iiwa_motor_right">
       &lt;hardwareInterface>EffortJointInterface&lt;/hardwareInterface>
-      &lt;!--&lt;hardwareInterface>hardware_interface/EffortJointInterface&lt;/hardwareInterface>-->
+      &lt;!--&lt;hardwareInterface>EffortJointInterface&lt;/hardwareInterface>-->
       &lt;mechanicalReduction>1&lt;/mechanicalReduction>
     &lt;/actuator>
   &lt;/transmission>
@@ -617,15 +598,13 @@ gripper_right_effort_controller:
 
     <!-- load the controllers -->
     <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
-      output="screen" args="arm_j1_position_controller arm_j2_position_controller arm_j3_position_controller arm_j4_position_controller arm_j5_position_controller arm_j6_position_controller arm_j7_position_controller gripper_left_effort_controller gripper_right_effort_controller joint_state_controller">
-      <!--<remap from="/robot_description" to="/iiwa/robot_description"/>-->
+      output="screen" args="effort_trajectory_controller gripper_left_effort_controller gripper_right_effort_controller joint_state_controller">
     </node>
 
     <!-- convert joint states to TF transforms for rviz, etc -->
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
       respawn="false" output="screen">
       <remap from="/joint_states" to="/iiwa/joint_states" />
-      <!--<remap from="/iiwa/robot_description" to="/robot_description"/>-->
     </node>
   </group>
   <node name="manager_module" pkg="iba_multimodule_experiment" type="manager_module.py" respawn="false" output="screen"/>
